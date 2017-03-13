@@ -9,18 +9,22 @@ import entity.Catalogue;
 
 public class JsonResult<T> implements Serializable{
 	private int code;
-	private Map<String, List<Catalogue>> data;
+	private T data;
 	private long time;//服务器时间
+	
+	public final static Integer SUCCESS = 1;
+	public final static Integer FAILURE = 0;
+	
 	public int getCode() {
 		return code;
 	}
 	public void setCode(int code) {
 		this.code = code;
 	}
-	public Map<String, List<Catalogue>> getData() {
+	public T getData() {
 		return data;
 	}
-	public void setData(Map<String, List<Catalogue>> map) {
+	public void setData(T map) {
 		this.data = map;
 	}
 	public long getTime() {

@@ -17,7 +17,7 @@ public class CatalogueDaoImpl implements CatalogueDao{
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "select * from catalogue";
+			String sql = "select * from catalogue order by c_id";
 //			System.out.println(conn);
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
@@ -35,23 +35,35 @@ public class CatalogueDaoImpl implements CatalogueDao{
 		}
 	}
 
+	/**
+	 * 创建一个实体对象
+	* @param rs
+	* @throws SQLException
+	* @return
+	* @author fudakui
+	* @date 2017年3月10日
+	* modify history
+	 */
 	private Catalogue createCatalogue(ResultSet rs) throws SQLException {
 		Catalogue catalogue = new Catalogue();
 		
-		catalogue.setC_id(rs.getInt("c_id"));
-		catalogue.setC_name(rs.getString("c_name"));
-		catalogue.setC_status(rs.getString("c_status"));
+		catalogue.setcid(rs.getInt("c_id"));
+		catalogue.setcname(rs.getString("c_name"));
 		
 		return catalogue;
 	}
 	
+	
 	public static void main(String[] args) {
 		CatalogueDao dao = new CatalogueDaoImpl();
 		List<Catalogue> list = dao.findAll();
-		Date date = new Date();
-		long time = date.getTime();
-		System.out.println(date);
-		System.out.println(time);
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).getcname());
+		}
+//		Date date = new Date();
+//		long time = date.getTime();
+//		System.out.println(date);
+//		System.out.println(time);
 //		System.out.println(list.size());
 //		System.out.println(list.toString());
 	}
