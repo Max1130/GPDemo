@@ -106,13 +106,13 @@ public class MainServlet<T> extends HttpServlet{
 		}else {
 			//默认返回推荐分类的二级目录分类信息
 			CatalogueExtendDao ceDao = new CatalogueExtendImpl();
-			List<CatalogueExtend> ceList = ceDao.findCataExtend(list.get(0).getcid());
+			List<CatalogueExtend> ceList = ceDao.findById(list.get(0).getcid());
 			if (ceList == null) {
 				result.setCode(JsonResult.FAILURE);
 			}else {
 				result.setCode(JsonResult.SUCCESS);
 				dataList.setCatalogue(list);
-//				dataList.setCatalogueExtend(ceList);
+				dataList.setCatalogueExtend(ceList);
 				result.setData(dataList);
 			}
 		}

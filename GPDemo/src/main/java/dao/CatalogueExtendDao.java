@@ -14,5 +14,5 @@ public interface CatalogueExtendDao {
 	 * @date 2017年3月10日
 	 * modify history
 	 */
-	List<CatalogueExtend> findCataExtend(Integer cid);
+	List<CatalogueExtend> findById(Integer cid);
 }

@@ -12,7 +12,7 @@ import util.DBUtil;
 
 public class CatalogueExtendImpl implements CatalogueExtendDao{
 
-	public List<CatalogueExtend> findCataExtend(Integer cid) {
+	public List<CatalogueExtend> findById(Integer cid) {
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
@@ -44,7 +44,7 @@ public class CatalogueExtendImpl implements CatalogueExtendDao{
 	
 	public static void main(String[] args) {
 		CatalogueExtendDao dao = new CatalogueExtendImpl();
-		List<CatalogueExtend> list = dao.findCataExtend(1);
+		List<CatalogueExtend> list = dao.findById(1);
 		System.out.println(list.size());
 	}
 
