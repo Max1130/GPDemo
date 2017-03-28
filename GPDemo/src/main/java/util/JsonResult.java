@@ -10,10 +10,12 @@ import entity.Catalogue;
 public class JsonResult<T> implements Serializable{
 	private int code;
 	private T data;
-	private long time;//服务器时间
+	private long ts;//服务器时间
+	private String msg;//
 	
-	public final static Integer SUCCESS = 1;
-	public final static Integer FAILURE = 0;
+	
+	public final static Integer SUCCESS = 0;
+	public final static Integer FAILURE = 1;
 	
 	public int getCode() {
 		return code;
@@ -27,15 +29,17 @@ public class JsonResult<T> implements Serializable{
 	public void setData(T map) {
 		this.data = map;
 	}
-	public long getTime() {
-		return time;
+	public long getTs() {
+		return ts;
 	}
-	public void setTime(long time) {
-		this.time = time;
+	public void setTs(long ts) {
+		this.ts = ts;
 	}
-	@Override
-	public String toString() {
-		return "JsonResult [code=" + code + ", data=" + data + ", time=" + time + "]";
+	public String getMsg() {
+		return msg;
+	}
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
 	
 }

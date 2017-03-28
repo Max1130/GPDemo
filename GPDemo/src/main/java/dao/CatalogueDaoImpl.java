@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import entity.Catalogue;
@@ -47,7 +46,7 @@ public class CatalogueDaoImpl implements CatalogueDao{
 	private Catalogue createCatalogue(ResultSet rs) throws SQLException {
 		Catalogue catalogue = new Catalogue();
 		
-		catalogue.setcid(rs.getInt("c_id"));
+		catalogue.setcid(rs.getString("c_id"));
 		catalogue.setcname(rs.getString("c_name"));
 		
 		return catalogue;

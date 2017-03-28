@@ -12,7 +12,8 @@ import util.DBUtil;
 
 public class CatalogueThreeDaoImpl implements CatalogueThreeDao{
 
-	public List<CatalogueThree> findById(Integer ceid) {
+	public List<CatalogueThree> findById(String ceid) {
+		
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
@@ -45,9 +46,9 @@ public class CatalogueThreeDaoImpl implements CatalogueThreeDao{
 	 */
 	private CatalogueThree createCatalogueThree(ResultSet rs) throws SQLException {
 		CatalogueThree three = new CatalogueThree();
-		String path = "\\YouYiBuy\\images\\";
+		String path = "/YouYiBuy/images/";
 		
-		three.setTid(rs.getInt("THREE_ID"));
+		three.setTid(rs.getString("THREE_ID"));
 		three.setTname(rs.getString("THREE_NAME"));
 		three.setPurl(path+rs.getString("PICTURE_URL"));
 		// TODO Auto-generated method stub
@@ -57,7 +58,7 @@ public class CatalogueThreeDaoImpl implements CatalogueThreeDao{
 	
 	public static void main(String[] args) {
 		CatalogueThreeDao dao = new CatalogueThreeDaoImpl();
-		List<CatalogueThree> list = dao.findById(61);
+		List<CatalogueThree> list = dao.findById("1");
 		System.out.println(list.toString());
 	}
 }

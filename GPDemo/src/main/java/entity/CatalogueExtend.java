@@ -7,19 +7,19 @@ package entity;
 * modify history
  */
 public class CatalogueExtend {
-	private Integer ceid;//二级分类表ID
-	private Integer cid;//上级表ID
+	private String ceid;//二级分类表ID
+	private String cid;//上级表ID
 	private String cename;//二级分类名称
-	public Integer getCeid() {
+	public String getCeid() {
 		return ceid;
 	}
-	public void setCeid(Integer ceid) {
+	public void setCeid(String ceid) {
 		this.ceid = ceid;
 	}
-	public Integer getCid() {
+	public String getCid() {
 		return cid;
 	}
-	public void setCid(Integer cid) {
+	public void setCid(String cid) {
 		this.cid = cid;
 	}
 	public String getCename() {

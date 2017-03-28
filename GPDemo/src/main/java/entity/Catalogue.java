@@ -8,14 +8,14 @@ package entity;
 * modify history
  */
 public class Catalogue {
-	private Integer cid;//分类id
+	private String cid;//分类id
 	private String cname;//分类名称
 
-	public Integer getcid() {
+	public String getcid() {
 		return cid;
 	}
 
-	public void setcid(Integer cid) {
+	public void setcid(String cid) {
 		this.cid = cid;
 	}
 

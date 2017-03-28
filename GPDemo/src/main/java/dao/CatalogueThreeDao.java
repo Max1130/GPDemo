@@ -14,5 +14,5 @@ public interface CatalogueThreeDao {
 	 * @date 2017年3月15日
 	 * modify history
 	 */
-	List<CatalogueThree> findById(Integer ceid);
+	List<CatalogueThree> findById(String ceid);
 }

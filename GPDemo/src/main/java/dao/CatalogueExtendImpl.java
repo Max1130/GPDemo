@@ -12,7 +12,7 @@ import util.DBUtil;
 
 public class CatalogueExtendImpl implements CatalogueExtendDao{
 
-	public List<CatalogueExtend> findById(Integer cid) {
+	public List<CatalogueExtend> findById(String cid) {
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
@@ -36,7 +36,7 @@ public class CatalogueExtendImpl implements CatalogueExtendDao{
 	private CatalogueExtend createCatalogueExtend(ResultSet rs) throws SQLException {
 		CatalogueExtend cePo = new CatalogueExtend();
 		
-		cePo.setCeid(rs.getInt("C_E_ID"));
+		cePo.setCeid(rs.getString("C_E_ID"));
 		cePo.setCename(rs.getString("C_E_NAME"));
 		
 		return cePo;
@@ -44,7 +44,7 @@ public class CatalogueExtendImpl implements CatalogueExtendDao{
 	
 	public static void main(String[] args) {
 		CatalogueExtendDao dao = new CatalogueExtendImpl();
-		List<CatalogueExtend> list = dao.findById(1);
+		List<CatalogueExtend> list = dao.findById("1");
 		System.out.println(list.size());
 	}
 
