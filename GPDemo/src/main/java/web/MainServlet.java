@@ -42,13 +42,13 @@ public class MainServlet<T> extends HttpServlet{
 		String path = req.getServletPath();
 		//控制台输出请求路径
 		System.out.println(path);
-		if ("/allCata.do".equals(path)) {
+		if ("/allCata.do".equals(path)) {//全部分类
 			allCata(req,res);
-		}else if ("/singleCata.do".equals(path)) {//id 1
+		}else if ("/singleCata.do".equals(path)) {//id 1  某一种分类
 			singleCata(req,res);
-		}else if ("/findGoodsByType.do".equals(path)) {//type3
+		}else if ("/findGoodsByType.do".equals(path)) {//type3    具体分类下的商品列表
 			findGoodsByType(req,res);
-		}else if ("/findGoodById.do".equals(path)) {//id
+		}else if ("/findGoodById.do".equals(path)) {//id   商品信息
 			findGoodById(req,res);
 		}else {
 			throw new RuntimeException("查无此页!");

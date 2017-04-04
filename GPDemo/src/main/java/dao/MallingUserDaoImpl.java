@@ -42,7 +42,7 @@ public class MallingUserDaoImpl implements MallingUserDao{
 			String sql = "select * from malling_user where user_name = "+userName;
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
-			MallingUser user = null;
+			MallingUser user = new MallingUser();
 			while (rs.next()) {
 				user.setId(rs.getString("ID"));
 				user.setUserName(userName);
