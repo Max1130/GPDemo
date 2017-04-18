@@ -21,16 +21,21 @@ import dao.CatalogueExtendDao;
 import dao.CatalogueExtendImpl;
 import dao.CatalogueThreeDao;
 import dao.CatalogueThreeDaoImpl;
+import dao.GoodsRecommendDao;
+import dao.GoodsRecommendDaoImpl;
 import dao.MallingGoodDao;
 import dao.MallingGoodDaoImpl;
 import entity.Catalogue;
 import entity.CatalogueExtend;
 import entity.CatalogueThree;
+import entity.GoodsRecommend;
 import entity.MallingGoods;
 import util.DataList;
 import util.JsonResult;
+import util.ResultCode;
+import util.UuidUtil;
 
-public class MainServlet<T> extends HttpServlet{
+public class MainServlet extends HttpServlet{
 
 	/**
 	 * 
@@ -50,11 +55,138 @@ public class MainServlet<T> extends HttpServlet{
 			findGoodsByType(req,res);
 		}else if ("/findGoodById.do".equals(path)) {//id   商品信息
 			findGoodById(req,res);
+		}else if ("/findRecommend.do".equals(path)) {//查看推荐  userId
+			findRecommend(req,res);
+		}else if ("/insertRecommend.do".equals(path)) {//存入用户推荐表中
+			insertRecommend(req,res);
 		}else {
+			error(req,res);
 			throw new RuntimeException("查无此页!");
 		}
 	}
 	
+	/**
+	 * 存入用户浏览的商品ID
+	 * 描述方法作用
+	 * @param req
+	 * @param res
+	 * @throws ServletException
+	 * @throws IOException
+	 * @author fudakui
+	 * @date 2017年4月16日
+	 * modify history
+	 */
+	private void insertRecommend(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		res.setContentType("text/plain");
+		res.setCharacterEncoding("UTF-8");
+		PrintWriter out = res.getWriter();
+		Gson gson = new Gson();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		String userId = req.getParameter("userId");
+		String goodId = req.getParameter("goodId");
+		
+		if (userId == null || goodId == null) {
+			resultMap.put("code", ResultCode.FAILURE);
+			resultMap.put("msg", "参数为空");
+			resultMap.put("data", "");
+			resultMap.put("ts", new Date().getTime());
+			out.write(gson.toJson(resultMap));
+			out.flush(); 
+			out.close();
+			return;
+		}
+		GoodsRecommendDao recommendDao = new GoodsRecommendDaoImpl();
+		GoodsRecommend goodRecommend = new GoodsRecommend();
+		goodRecommend.setRid(UuidUtil.generateUUID());
+		goodRecommend.setUserId(userId);
+		goodRecommend.setGoodId(goodId);
+		
+		boolean bool = recommendDao.insertOrUpdate(goodRecommend);
+		if (bool) {
+			resultMap.put("code", ResultCode.SUCCEED);
+			resultMap.put("msg", "插入成功");
+		}else {
+			resultMap.put("code", ResultCode.FAILURE);
+			resultMap.put("msg", "插入失败");
+		}
+		resultMap.put("data", "");
+		resultMap.put("ts", new Date().getTime());
+		out.write(gson.toJson(resultMap));
+		out.flush(); 
+		out.close();
+	}
+
+	/**
+	 * 根据userId查询推荐商品
+	 * 描述方法作用
+	 * @param req
+	 * @param res
+	 * @throws ServletException
+	 * @throws IOException
+	 * @author fudakui
+	 * @date 2017年4月16日
+	 * modify history
+	 */
+	private void findRecommend(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		res.setContentType("text/plain");
+		res.setCharacterEncoding("UTF-8");
+		PrintWriter out = res.getWriter();
+		Gson gson = new Gson();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		//接收userId参数
+		String userId = req.getParameter("userId");
+		if (userId == null) {
+			resultMap.put("code", ResultCode.FAILURE);
+			resultMap.put("msg", "参数为空");
+			resultMap.put("data", "");
+			resultMap.put("ts", new Date().getTime());
+			out.write(gson.toJson(resultMap));
+			out.flush(); 
+			out.close();
+			return;
+		}
+		GoodsRecommendDao recommendDao = new GoodsRecommendDaoImpl();
+		List<String> ids = recommendDao.queryByUserId(userId);
+		MallingGoodDao goodDao = new MallingGoodDaoImpl();
+		List<MallingGoods> goodList = goodDao.findGoodsByIds(ids);
+		
+		resultMap.put("code", ResultCode.SUCCEED);
+		resultMap.put("msg", "查询成功");
+		resultMap.put("data", goodList);
+		resultMap.put("ts", new Date().getTime());
+		out.write(gson.toJson(resultMap));
+		out.flush(); 
+		out.close();
+	}
+
+	/**
+	 * 未知原因错误返回状态值
+	 * 描述方法作用
+	 * @param req
+	 * @param res
+	 * @author fudakui
+	 * @date 2017年4月8日
+	 * modify history
+	 */
+	private void error(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		res.setContentType("text/plain");
+		res.setCharacterEncoding("UTF-8");
+		PrintWriter out = res.getWriter();
+		Gson gson = new Gson();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("code", ResultCode.UNKNOWN_ERROR);
+		resultMap.put("msg", "");
+		resultMap.put("data", "");
+		resultMap.put("ts", new Date().getTime());
+		
+		out.write(gson.toJson(resultMap));
+		out.flush(); 
+		out.close(); 
+	}
+
 	/**
 	 * 通过商品ID查询商品信息
 	 * 描述方法作用
@@ -78,11 +210,11 @@ public class MainServlet<T> extends HttpServlet{
 		MallingGoodDao dao = new MallingGoodDaoImpl();
 		MallingGoods good = dao.findGoodById(idStr);
 		if (good == null) {
-			resultMap.put("code", JsonResult.FAILURE);
-			resultMap.put("msg", "查询失败");
+			resultMap.put("code", ResultCode.FAILURE);
+			resultMap.put("msg", "暂无数据");
 			resultMap.put("data", good);
 		}else {
-			resultMap.put("code", JsonResult.SUCCESS);
+			resultMap.put("code", ResultCode.SUCCEED);
 			resultMap.put("msg", "查询成功");
 			resultMap.put("data", good);
 		}
@@ -115,7 +247,7 @@ public class MainServlet<T> extends HttpServlet{
 		
 		List<MallingGoods> goodlist = dao.findByType(type);
 		if (goodlist.isEmpty()) {
-			result.setCode(JsonResult.FAILURE);
+			result.setCode(ResultCode.FAILURE);
 			result.setData(dataList);
 			result.setMsg("暂无数据");
 		}else {
@@ -157,7 +289,7 @@ public class MainServlet<T> extends HttpServlet{
 		List<CatalogueExtend> ceList = dao.findById(cidStr);
 		
 		if (ceList.isEmpty()) {
-			resultMap.put("code", JsonResult.FAILURE);
+			resultMap.put("code", ResultCode.FAILURE);
 			resultMap.put("data", mapList);
 			resultMap.put("msg", "暂无数据");
 		} else {
@@ -170,9 +302,13 @@ public class MainServlet<T> extends HttpServlet{
 					threeList.add(catalogueThree);
 				}
 			}
+			if (threeList == null || threeList.size() < 1) {
+				mapList.put("catalogueThree", "暂无数据");
+			}else {
+				mapList.put("catalogueThree", threeList);
+			}
 			mapList.put("catalogueExtend", ceList);
-			mapList.put("catalogueThree", threeList);
-			resultMap.put("code", JsonResult.SUCCESS);
+			resultMap.put("code", ResultCode.SUCCEED);
 			resultMap.put("data", mapList);
 			resultMap.put("msg", "查询成功");
 			
@@ -195,7 +331,7 @@ public class MainServlet<T> extends HttpServlet{
 	 * @date 2017年3月10日
 	 * modify history
 	 */
-	protected void allCata(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	private void allCata(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		res.setContentType("text/plain");
 		res.setCharacterEncoding("UTF-8");
 		PrintWriter out = res.getWriter();
@@ -209,12 +345,12 @@ public class MainServlet<T> extends HttpServlet{
 		List<Catalogue> catalogueList = dao.findAll();
 		
 		if (catalogueList.isEmpty()) {
-			resultMap.put("code", JsonResult.FAILURE);
+			resultMap.put("code", ResultCode.FAILURE);
 			resultMap.put("msg", "暂无数据");
 			resultMap.put("data", mapList);
 		}else {
 //			mapList.put("catalogue", catalogueList);
-			resultMap.put("code", JsonResult.SUCCESS);
+			resultMap.put("code", ResultCode.SUCCEED);
 			resultMap.put("data", catalogueList);
 			resultMap.put("msg", "查询成功");
 		}

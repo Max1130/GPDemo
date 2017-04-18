@@ -15,6 +15,24 @@ public interface MallingGoodDao {
 	 * modify history
 	 */
 	List<MallingGoods> findByType(String type);
-	
+	/**
+	 * 通过商品ID查询商品信息
+	 * 描述方法作用
+	 * @param id
+	 * @return
+	 * @author fudakui
+	 * @date 2017年4月16日
+	 * modify history
+	 */
 	MallingGoods findGoodById(String id);
+	/**
+	 * 通过很多商品ID查询返回商品list
+	 * 描述方法作用
+	 * @param ids
+	 * @return
+	 * @author fudakui
+	 * @date 2017年4月16日
+	 * modify history
+	 */
+	List<MallingGoods> findGoodsByIds(List<String> ids);
 }

@@ -19,4 +19,22 @@
   	<url-pattern>*.do</url-pattern>
   </servlet-mapping>
   
+   <servlet>
+  	<servlet-name>login</servlet-name>
+  	<servlet-class>web.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>login</servlet-name>
+  	<url-pattern>*.json</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>web</servlet-name>
+  	<servlet-class>web.WebServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>web</servlet-name>
+  	<url-pattern>*.html</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

@@ -1,0 +1,89 @@
+/* #body { */
+/* 	height: 800px; */
+/* } */
+
+form {
+	width: 90%;
+	margin: 0 auto;
+}
+
+form div {
+	margin: 0px 10px;
+	padding: 5px 0;
+	font-size: 25px;
+}
+
+.required {
+	color: red;
+}
+
+/*文本域*/
+div textarea {
+	width: 300px;
+	height: 100px;
+	border: 1px solid #418ACD;
+}
+
+div .btn_save {
+	width:60px;
+	height:30px;
+	color: #d9eef7;
+	font-size:20px;
+    border: solid 1px #0076a3;  
+    margin-left: 40px;
+    background: #0095cd;  
+    background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));  
+    background: -moz-linear-gradient(top,  #00adee,  #0078a5);  
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
+}
+
+input[type=text] {
+	height: 40px;
+	width: 300px;
+	padding: 0 5px;
+	border: 1px solid #52A2DB;
+	border-radius: 3px;
+	letter-spacing: 0.01em;
+	margin-left: 20px;
+	font-size: 70%;
+	font-family:"STKaiti",华文楷体;
+}
+
+input[type=button]:hover,input[type=submit]:HOVER {
+	background: #007ead;  
+    background: -webkit-gradient(linear, left top, left bottom, from(#0095cc), to(#00678e));  
+    background: -moz-linear-gradient(top,  #0095cc,  #00678e);  
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#0095cc', endColorstr='#00678e');  
+}
+div textarea {
+	margin-left: 20px;
+	font-size: 70%;
+	font-family:"STKaiti",华文楷体;
+}
+
+/*上传图片样式*/
+.file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+    font-size: 60%;
+}
+.file input {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}

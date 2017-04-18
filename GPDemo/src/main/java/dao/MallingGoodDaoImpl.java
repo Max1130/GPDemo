@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import entity.MallingGoods;
@@ -33,6 +34,16 @@ public class MallingGoodDaoImpl implements MallingGoodDao{
 		}
 	}
 
+	/**
+	 * 得到一个商品对象
+	 * 描述方法作用
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 * @author fudakui
+	 * @date 2017年4月16日
+	 * modify history
+	 */
 	private MallingGoods createMallingGood(ResultSet rs) throws SQLException {
 		MallingGoods good = new MallingGoods();
 		String path = "/YouYiBuy/images/";
@@ -67,6 +78,18 @@ public class MallingGoodDaoImpl implements MallingGoodDao{
 		}
 	}
 	
+	public List<MallingGoods> findGoodsByIds(List<String> ids) {
+		List<MallingGoods> goodList = new ArrayList<MallingGoods>();
+		if (ids == null || ids.size()<1) {
+			return goodList;
+		}
+		for (String id : ids) {
+			MallingGoods good = new MallingGoods();
+			good = findGoodById(id);
+			goodList.add(good);
+		}
+		return goodList;
+	}
 	
 	
 	
@@ -75,6 +98,7 @@ public class MallingGoodDaoImpl implements MallingGoodDao{
 		List<MallingGoods> list = dao.findByType("3");
 		System.out.println(list.size());
 	}
+
 
 	
 }

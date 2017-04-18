@@ -39,7 +39,7 @@ public class MallingUserDaoImpl implements MallingUserDao{
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "select * from malling_user where user_name = "+userName;
+			String sql = "select * from malling_user where user_name = '"+userName+"'";
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			MallingUser user = new MallingUser();
@@ -48,8 +48,10 @@ public class MallingUserDaoImpl implements MallingUserDao{
 				user.setUserName(userName);
 				user.setPassword(rs.getString("PASSWORD"));
 				user.setToken(rs.getString("TOKEN"));
+				
+				return user;
 			}
-			return user;
+			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
