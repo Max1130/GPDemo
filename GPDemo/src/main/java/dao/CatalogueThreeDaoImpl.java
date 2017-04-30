@@ -17,7 +17,7 @@ public class CatalogueThreeDaoImpl implements CatalogueThreeDao{
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "SELECT THREE_ID,THREE_NAME,PICTURE_URL FROM CATALOGUE_THREE WHERE C_E_ID = "+ceid;
+			String sql = "SELECT THREE_ID,THREE_NAME,PICTURE_URL FROM GP_CATALOGUE_THREE WHERE C_E_ID = "+ceid;
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			List<CatalogueThree> list = new ArrayList<CatalogueThree>();

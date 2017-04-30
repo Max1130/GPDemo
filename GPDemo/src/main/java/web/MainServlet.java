@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,12 +26,16 @@ import dao.GoodsRecommendDao;
 import dao.GoodsRecommendDaoImpl;
 import dao.MallingGoodDao;
 import dao.MallingGoodDaoImpl;
+import dao.ShoppingCartDao;
+import dao.ShoppingCartDaoImpl;
 import entity.Catalogue;
 import entity.CatalogueExtend;
 import entity.CatalogueThree;
 import entity.GoodsRecommend;
 import entity.MallingGoods;
+import entity.ShoppingCart;
 import util.DataList;
+import util.IPUtil;
 import util.JsonResult;
 import util.ResultCode;
 import util.UuidUtil;
@@ -59,12 +64,83 @@ public class MainServlet extends HttpServlet{
 			findRecommend(req,res);
 		}else if ("/insertRecommend.do".equals(path)) {//存入用户推荐表中
 			insertRecommend(req,res);
+		}else if ("/toShoppingCartList.do".equals(path)) {
+			toShoppingCartList(req,res);
 		}else {
 			error(req,res);
 			throw new RuntimeException("查无此页!");
 		}
 	}
 	
+	/**
+	 * 返回购物车列表
+	 * 描述方法作用
+	 * @param req
+	 * @param res
+	 * @author fudakui
+	 * @date 2017年4月22日
+	 * modify history
+	 */
+	private void toShoppingCartList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		res.setContentType("text/plain");
+		res.setCharacterEncoding("UTF-8");
+		PrintWriter out = res.getWriter();
+		Gson gson = new Gson();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		String userId = req.getParameter("userId");
+		
+		resultMap.put("ts", new Date().getTime());
+		if (userId == null) {
+			resultMap.put("code", ResultCode.FAILURE);
+			resultMap.put("msg", "参数为空");
+			resultMap.put("data", "");
+			out.write(gson.toJson(resultMap));
+			out.flush(); 
+			out.close();
+			return;
+		}
+		Map<String, Object> data = new HashMap<String, Object>();
+		resultMap.put("code", ResultCode.SUCCEED);
+		MallingGoodDao goodDao = new MallingGoodDaoImpl();
+		
+		//通过userId查询购物车列表
+		ShoppingCartDao shopDao = new ShoppingCartDaoImpl();
+		List<ShoppingCart> shopVos = shopDao.queryByUserId(userId);
+		List<Map<String, Object>> shoppingCartList = new ArrayList<Map<String,Object>>();
+		for (ShoppingCart shopVo : shopVos) {
+			Map<String, Object> shopGoodMap = new HashMap<String, Object>();
+			MallingGoods shopGoodVo = goodDao.findGoodById(shopVo.getGoodId());
+			shopGoodMap.put("name", shopGoodVo.getGoodName());
+			shopGoodMap.put("price", shopGoodVo.getPrice());
+			shopGoodMap.put("described", shopGoodVo.getDescription());
+			shopGoodMap.put("url", IPUtil.getContentpath()+shopGoodVo.getImageUrl());
+			shopGoodMap.put("count", shopVo.getCount());
+			shoppingCartList.add(shopGoodMap);
+		}
+		data.put("shoppingCartList", shoppingCartList);
+		
+		//通过userId查询浏览商品id记录
+		GoodsRecommendDao recommendDao = new GoodsRecommendDaoImpl();
+		List<String> recommendIds = recommendDao.queryByUserId(userId);
+		List<Map<String, Object>> recommendedList = new ArrayList<Map<String,Object>>();
+		Random rand = new Random();
+		for (String goodId: recommendIds) {
+			Map<String, Object> recommendGoodMap = new HashMap<String, Object>();
+			MallingGoods recommendGoodVo = goodDao.findGoodById(goodId);
+			recommendGoodMap.put("name", recommendGoodVo.getGoodName());
+			recommendGoodMap.put("price", recommendGoodVo.getPrice());
+			recommendGoodMap.put("url", IPUtil.getContentpath()+recommendGoodVo.getImageUrl());
+			recommendGoodMap.put("type", rand.nextInt(2)+1);
+			recommendedList.add(recommendGoodMap);
+		}
+		data.put("recommendedList", recommendedList);
+		resultMap.put("data", data);
+		out.write(gson.toJson(resultMap));
+		out.flush(); 
+		out.close();
+	}
+
 	/**
 	 * 存入用户浏览的商品ID
 	 * 描述方法作用
@@ -279,13 +355,12 @@ public class MainServlet extends HttpServlet{
 		res.setCharacterEncoding("UTF-8");
 		PrintWriter out = res.getWriter();
 		String cidStr = req.getParameter("id");//获取一级目录ID
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		Map<String, Object> mapList = new HashMap<String, Object>();
+		Map<String, Object> resultMap = new HashMap<String, Object>();//最外层
+		Map<String, Object> mapList = new HashMap<String, Object>();//data层
 		Gson gson = new Gson();
 		
 		//通过cid查询二级分类信息
 		CatalogueExtendDao dao = new CatalogueExtendImpl();
-		
 		List<CatalogueExtend> ceList = dao.findById(cidStr);
 		
 		if (ceList.isEmpty()) {
@@ -293,21 +368,25 @@ public class MainServlet extends HttpServlet{
 			resultMap.put("data", mapList);
 			resultMap.put("msg", "暂无数据");
 		} else {
-			List<CatalogueThree> threeList = new ArrayList<CatalogueThree>();
+			List<Map<String, Object>> categoryList = new ArrayList<Map<String,Object>>();//categoryList层
 			CatalogueThreeDao threeDao = new CatalogueThreeDaoImpl();
 			for (CatalogueExtend catalogueExtend : ceList) {
-				List<CatalogueThree> list = threeDao.findById(catalogueExtend.getCeid()); 
-				for (CatalogueThree catalogueThree : list) {
-					catalogueThree.setCeid(catalogueExtend.getCeid());
-					threeList.add(catalogueThree);
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("titleName", catalogueExtend.getCename());
+				//通过二级分类ID查询对应三级分类
+				List<CatalogueThree> list = threeDao.findById(catalogueExtend.getCeid());
+				List<Map<String, String>> products = new ArrayList<Map<String,String>>();
+				for (CatalogueThree catathree : list) {
+					Map<String, String> three = new HashMap<String, String>();
+					three.put("title", catathree.getTname());
+					three.put("id", catathree.getTid());
+					three.put("url", IPUtil.getContentpath()+catathree.getPurl());
+					products.add(three);
 				}
+				map.put("products", products);
+				categoryList.add(map);
 			}
-			if (threeList == null || threeList.size() < 1) {
-				mapList.put("catalogueThree", "暂无数据");
-			}else {
-				mapList.put("catalogueThree", threeList);
-			}
-			mapList.put("catalogueExtend", ceList);
+			mapList.put("categoryList", categoryList);
 			resultMap.put("code", ResultCode.SUCCEED);
 			resultMap.put("data", mapList);
 			resultMap.put("msg", "查询成功");

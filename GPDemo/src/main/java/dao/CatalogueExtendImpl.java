@@ -16,7 +16,7 @@ public class CatalogueExtendImpl implements CatalogueExtendDao{
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "SELECT C_E_ID,C_E_NAME FROM CATALOGUE_EXTEND WHERE C_ID = "+cid;
+			String sql = "SELECT C_E_ID,C_E_NAME FROM GP_CATALOGUE_EXTEND WHERE C_ID = "+cid;
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			List<CatalogueExtend> list = new ArrayList<CatalogueExtend>();

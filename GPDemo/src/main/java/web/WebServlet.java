@@ -28,17 +28,20 @@ public class WebServlet extends HttpServlet{
 			webLogin(req,res);
 		}else if ("/index.html".equals(path)) {
 			index(req,res);
+		}else if ("/toRegister.html".equals(path)) {
+			toRegister(req,res);
 		}else{
 			
 		}
 		
 	}
 
+
 	private void index(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
 		res.setCharacterEncoding("utf-8");
 		
-		req.getRequestDispatcher("WEB-INF/yyb/hello.jsp").forward(req, res);
+		req.getRequestDispatcher("WEB-INF/yyb/index.jsp").forward(req, res);
 	}
 
 	private void webLogin(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -52,6 +55,20 @@ public class WebServlet extends HttpServlet{
 	}
 	
 	/**
+	 * 定位到注册页面
+	 * 描述方法作用
+	 * @param req
+	 * @param res
+	 * @throws ServletException
+	 * @throws IOException
+	 * @author fudakui
+	 * @date 2017年4月19日
+	 * modify history
+	 */
+	private void toRegister(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		req.getRequestDispatcher("register.jsp").forward(req, res);
+	}
+	/**
 	 * 定位到登录页面
 	 * 描述方法作用
 	 * @param req
@@ -63,7 +80,7 @@ public class WebServlet extends HttpServlet{
 	 * modify history
 	 */
 	private void towebLogin(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-		req.getRequestDispatcher("WEB-INF/yyb/tologin.jsp").forward(req, res);
+		req.getRequestDispatcher("login.jsp").forward(req, res);
 	}
 
 }

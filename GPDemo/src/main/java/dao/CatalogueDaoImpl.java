@@ -16,7 +16,7 @@ public class CatalogueDaoImpl implements CatalogueDao{
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "select * from catalogue ";
+			String sql = "select * from gp_catalogue ";
 //			System.out.println(conn);
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);

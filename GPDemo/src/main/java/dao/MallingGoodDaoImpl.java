@@ -17,7 +17,7 @@ public class MallingGoodDaoImpl implements MallingGoodDao{
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "select * from MALLING_GOODS where type = "+type;
+			String sql = "select * from GP_MALLING_GOODS where type = "+type;
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			List<MallingGoods> list = new ArrayList<MallingGoods>();
@@ -62,7 +62,7 @@ public class MallingGoodDaoImpl implements MallingGoodDao{
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "select * from MALLING_GOODS where id = " + id;
+			String sql = "select * from GP_MALLING_GOODS where id = " + id;
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {

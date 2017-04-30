@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import entity.MallingUser;
-import oracle.net.aso.r;
 import util.DBUtil;
 
 public class MallingUserDaoImpl implements MallingUserDao{
@@ -15,7 +14,7 @@ public class MallingUserDaoImpl implements MallingUserDao{
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "insert into malling_user values(?,?,?,sysdate,?)";
+			String sql = "insert into gp_malling_user values(?,?,?,sysdate,?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, user.getId());
 			ps.setString(2, user.getUserName());

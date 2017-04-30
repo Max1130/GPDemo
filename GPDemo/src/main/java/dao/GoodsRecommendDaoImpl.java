@@ -11,7 +11,6 @@ import java.util.List;
 import com.sun.corba.se.spi.orbutil.fsm.State;
 
 import entity.GoodsRecommend;
-import oracle.net.aso.r;
 import util.DBUtil;
 import util.UuidUtil;
 
@@ -103,7 +102,7 @@ public class GoodsRecommendDaoImpl implements GoodsRecommendDao{
 		List<String> list = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "select good_id from goods_recommend where user_id = " + userId + "order by modify_date desc";
+			String sql = "select good_id from gp_goods_recommend where user_id = '" + userId + "' order by modify_date desc";
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			list = new ArrayList<String>();

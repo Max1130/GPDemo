@@ -6,8 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>分类</title>
-<link type="text/css" rel="stylesheet" media="all" href="styles/index.css"/>
+<title>GrassLiuCommunity</title>
+<link type="text/css" rel="stylesheet" media="all" href="index.css"/>
 </head>
 <body>
 	<!-- header开始 -->
@@ -17,7 +17,12 @@
 		img:/xxx/images/..
 	 -->
 		<img alt="logo" src="images/logo.png" onclick="location.reload(true);">
-		<c:import url="../logo_out.jsp"></c:import>
+		<c:if test="${isIn == null }">
+			<c:import url="../logo_out.jsp"></c:import>
+		</c:if>
+		<c:if test="${isIn == 1 }">
+			<c:import url="../logo_in.jsp"></c:import>
+		</c:if>
 	</div>
 	<!-- header结束 -->
 	<!-- body开始 -->
@@ -36,7 +41,12 @@
 		<div id="invitation">
 			<!-- 导航区开始 -->
 			<div id="navigation">
-				<a href="toPost.invition"><p id="pmsg" align="center">发帖</p></a>
+				<c:if test="${isIn == null }">
+					<a href="tologin.jsp"><p id="pmsg" align="center">发帖</p></a>
+				</c:if>
+				<c:if test="${isIn == 1 }">
+					<a href="toPost.invition"><p id="pmsg" align="center">发帖</p></a>
+				</c:if>
 				<a href="#"><p id="to_top"></p></a>
 			</div>
 			<!-- 导航区结束 -->

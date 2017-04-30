@@ -1,53 +1,50 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-   <head>
-      <title>Login</title>
-      <meta http-equiv="Content-Type" name="viewport" content="width=device-width, initial-scale=1.0;text/html;charset=utf-8">
-      <!-- 引入 Bootstrap -->
-      <link href="css/bootstrap.min.css" rel="stylesheet">
- 
-      <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
-      <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
-      <!--[if lt IE 9]>
-         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-      <![endif]-->
-   </head>
-   <body>
- 	<div class="container" style="margin:0px 0px; padding: 0px 0px; width: 100%">
+ <link href="css/bootstrap.min.css" rel="stylesheet">
+
+ <style type="text/css">
+	 #submit1{
+		 background-color:#00B5AD;
+	 }
+ </style>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>登录</title>
+</head>
+<body>
+	<div class="container" style="margin:0px 0px; padding: 0px 0px; width: 100%">
 		<div class="row clearfix"  style="background-color: #000000;width: 100%;margin: 50px 0px;">
 			<div class="col-md-6 column" style="width: 300px;">
 				<h1 class="text-center" style="color: #FFFFFF;">
-					Socra
+					Youyibuy
 				</h1>
 			</div>
 			<div class="col-md-6 column" style="padding: 0px;margin-right: 200px;width: 500px;">
 				<ul class="nav nav-pills" style="margin-top: 20px;" >
-					<li class="active">
-						 <a href="index.jsp">首页</a>
-					</li>
+<!-- 					<li class="active"> -->
+<!-- 						 <a href="index.html">首页</a> -->
+<!-- 					</li> -->
 					<li>
-						 <a href="register.html">注册</a>
-					</li>
-					<li >
-						 <a href="https://www.zpcheng.me/about/">Find me</a>
+						 <a href="toRegister.html">注册</a>
 					</li>
 				</ul>
 			</div>
 		</div>
 		<div class="row clearfix">
 			<div class="col-md-12 column" style="padding: 0px;">
-				<form class="form-horizontal" role="form" style="margin-top: 200px ;"
+				<form class="form-horizontal" role="form" style="margin-top: 150px ;"
 						action="UserLoginServlet" method="post" onsubmit="return validate();">
 					<div class="form-group" style="margin-left: 30%;">
-						 <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+						 <label for="inputEmail3" class="col-sm-2 control-label">用户名</label>
 						<div class="col-sm-10" style="width: 30%;">
-							<input type="email" class="form-control" id="inputEmail3" 
-								name="account"/>
+							<input type="text" class="form-control" id="inputEmail3"
+								name="userName"/>
 						</div>
 					</div>
 					<div class="form-group" style="margin-left: 30%;">
-						 <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+						 <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
 						<div class="col-sm-10" style="width: 30%;">
 							<input type="password" class="form-control" id="inputPassword3" 
 								name="password"/>
@@ -62,8 +59,8 @@
 					</div>
 					<div class="form-group" style="margin-left: 42%;">
 						<div class="col-sm-offset-2 col-sm-10" style="margin: 0px;">
-							 <button type="submit" class="btn btn-default" style="margin-right: 100px;">Sign in</button>
-							 <button type="reset" class="btn btn-default">Reset</button>
+							 <button id="submit1" type="submit" class="btn btn-default" style="margin-right: 100px;"></button>
+							 <button type="reset" class="btn btn-default">重置</button>
 						</div>
 					</div>
 				</form>
@@ -92,5 +89,5 @@
       		return true;
       	}
       </script>
-   </body>
+</body>
 </html>
