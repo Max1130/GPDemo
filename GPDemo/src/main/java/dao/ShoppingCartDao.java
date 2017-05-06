@@ -1,8 +1,8 @@
 package dao;
 
-import java.util.List;
-
 import entity.ShoppingCart;
+
+import java.util.List;
 
 public interface ShoppingCartDao {
 	
@@ -16,4 +16,11 @@ public interface ShoppingCartDao {
 	 * modify history
 	 */
 	public List<ShoppingCart> queryByUserId(String userId);
+
+	/**
+	 * 新增入购物车
+	 * @param shoppingCart
+	 * @return
+	 */
+	public boolean insert(ShoppingCart shoppingCart);
 }

@@ -1,14 +1,11 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
 import entity.ShoppingCart;
 import util.DBUtil;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShoppingCartDaoImpl implements ShoppingCartDao{
 
@@ -33,6 +30,31 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao{
 		}
 	}
 
+	public boolean insert(ShoppingCart shoppingCart) {
+		Connection conn = null;
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "insert into GP_SHOPPING_CART values(?,?,?,?,sysdate)";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1,shoppingCart.getId());
+			ps.setString(2,shoppingCart.getGoodId());
+			ps.setInt(3,shoppingCart.getCount());
+			ps.setString(4,shoppingCart.getUserId());
+
+            int n = ps.executeUpdate();
+            if (n == 1) {
+                return true;
+            }
+		}catch (Exception e){
+            e.printStackTrace();
+            DBUtil.rollback(conn);
+            return false;
+		}finally {
+            DBUtil.close(conn);
+        }
+		return false;
+	}
+
 	private ShoppingCart createShoppingCart(ResultSet rs) throws SQLException {
 		ShoppingCart shopCart = new ShoppingCart();
 		
@@ -43,10 +65,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao{
 		return shopCart;
 	}
 
-	public static void main(String[] args) {
-		ShoppingCartDaoImpl imp = new ShoppingCartDaoImpl();
-		List<ShoppingCart> list = imp.queryByUserId("9b28e5d7ebbc4650a607445eb0af99a9");
-		System.out.println(list.size());
-	}
+
 	
 }

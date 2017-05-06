@@ -15,10 +15,9 @@ import util.DBUtil;
 import util.UuidUtil;
 
 public class GoodsRecommendDaoImpl implements GoodsRecommendDao{
-
+	//向推荐表中新增或更新浏览记录
 	public boolean insertOrUpdate(GoodsRecommend goodRecommend) {
 		GoodsRecommend recommend = queryByUseridAndGoodid(goodRecommend);
-		
 		Connection conn = null;
 		String sql = "";
 		try {
@@ -29,7 +28,7 @@ public class GoodsRecommendDaoImpl implements GoodsRecommendDao{
 			}else {
 				sql = "insert into goods_recommend (rid,user_id,good_id,sort,modify_date) "
 						+ "values ("+goodRecommend.getRid()+","+goodRecommend.getUserId()+""
-								+ ","+goodRecommend.getGoodId()+","+getNextSort(goodRecommend.getUserId())+",sysdate)";
+						+ ","+goodRecommend.getGoodId()+","+getNextSort(goodRecommend.getUserId())+",sysdate)";
 			}
 			Statement st = conn.createStatement();
 			int i = st.executeUpdate(sql);
@@ -39,18 +38,20 @@ public class GoodsRecommendDaoImpl implements GoodsRecommendDao{
 			return false;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			DBUtil.rollback(conn);
 			return false;
 		} finally {
 			DBUtil.close(conn);
 		}
 	}
-	
+	//通过用户ID和商品ID查询是否存在浏览记录
 	private  GoodsRecommend queryByUseridAndGoodid(GoodsRecommend goodRecommend){
 		Connection conn = null;
 		GoodsRecommend recommend = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "select * from goods_recommend where user_id = " + goodRecommend.getUserId()+",and good_id = " +goodRecommend.getGoodId();
+			String sql = "select * from goods_recommend where user_id = " 
+					+ goodRecommend.getUserId()+",and good_id = " +goodRecommend.getGoodId();
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {

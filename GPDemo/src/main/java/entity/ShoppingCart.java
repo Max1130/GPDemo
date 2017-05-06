@@ -8,6 +8,7 @@ public class ShoppingCart {
 	private Integer count;
 	private String userId;
 	private Date createTime;
+
 	public String getId() {
 		return id;
 	}

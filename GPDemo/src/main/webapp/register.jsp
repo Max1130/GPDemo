@@ -3,6 +3,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <link href="css/bootstrap.min.css" rel="stylesheet">
+ <style type="text/css">
+	 #submit1{
+		 background-color:#00B5AD;
+	 }
+ </style>
 <head>
  <link href="css/bootstrap.min.css" rel="stylesheet">
       <link href="css/myself.css" rel="stylesheet">
@@ -23,7 +28,7 @@
 						 <%--<a href="index.jsp">首页</a>--%>
 					<%--</li>--%>
 					<li>
-						 <a href="towebLogin.html">登陆</a>
+						 <a href="towebLogin.html">登录</a>
 					</li>
 				</ul>
 			</div>
@@ -46,7 +51,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10" style="margin-left: 43%;">
-							 <button type="submit" class="btn btn-default" style="margin-right: 100px;">注册</button>
+							 <button id="submit1" type="submit" class="btn btn-default" style="margin-right: 100px;">注册</button>
 							 <button type="reset" class="btn btn-default">重置</button>
 						</div>
 				</form>

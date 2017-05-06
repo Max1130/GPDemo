@@ -1,44 +1,17 @@
 package web;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import com.google.gson.Gson;
+import dao.*;
+import entity.*;
+import util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
-
-import dao.CatalogueDao;
-import dao.CatalogueDaoImpl;
-import dao.CatalogueExtendDao;
-import dao.CatalogueExtendImpl;
-import dao.CatalogueThreeDao;
-import dao.CatalogueThreeDaoImpl;
-import dao.GoodsRecommendDao;
-import dao.GoodsRecommendDaoImpl;
-import dao.MallingGoodDao;
-import dao.MallingGoodDaoImpl;
-import dao.ShoppingCartDao;
-import dao.ShoppingCartDaoImpl;
-import entity.Catalogue;
-import entity.CatalogueExtend;
-import entity.CatalogueThree;
-import entity.GoodsRecommend;
-import entity.MallingGoods;
-import entity.ShoppingCart;
-import util.DataList;
-import util.IPUtil;
-import util.JsonResult;
-import util.ResultCode;
-import util.UuidUtil;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 public class MainServlet extends HttpServlet{
 
@@ -64,14 +37,64 @@ public class MainServlet extends HttpServlet{
 			findRecommend(req,res);
 		}else if ("/insertRecommend.do".equals(path)) {//存入用户推荐表中
 			insertRecommend(req,res);
-		}else if ("/toShoppingCartList.do".equals(path)) {
+		}else if ("/toShoppingCartList.do".equals(path)) {//获取购物车列表
 			toShoppingCartList(req,res);
+		}else if ("/addShoppingCart.do".equals(path)){//添加到购物车
+			addShoppingCart(req,res);
 		}else {
 			error(req,res);
 			throw new RuntimeException("查无此页!");
 		}
 	}
-	
+
+	/**
+	 * 添加到购物车
+	 * @param req
+	 * @param res
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void addShoppingCart(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		res.setContentType("text/plain");
+		res.setCharacterEncoding("UTF-8");
+		PrintWriter out = res.getWriter();
+		Gson gson = new Gson();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+
+		String userId = req.getParameter("userId");
+		String goodId = req.getParameter("goodId");
+		String countStr = req.getParameter("count");
+		resultMap.put("ts", new Date().getTime());
+		if (userId==null || goodId==null || countStr==null){
+			resultMap.put("code", ResultCode.FAILURE);
+			resultMap.put("msg", "参数为空");
+			resultMap.put("data", "");
+			out.write(gson.toJson(resultMap));
+			out.flush();
+			out.close();
+			return;
+		}
+		ShoppingCart shoppingCart = new ShoppingCart();
+		shoppingCart.setId(UuidUtil.generateUUID());
+		shoppingCart.setGoodId(goodId);
+		shoppingCart.setCount(Integer.parseInt(countStr));
+		shoppingCart.setUserId(userId);
+		ShoppingCartDao shoppingCartDao = new ShoppingCartDaoImpl();
+		boolean bool = shoppingCartDao.insert(shoppingCart);
+		if (bool) {
+			resultMap.put("code", ResultCode.SUCCEED);
+			resultMap.put("msg", "插入成功");
+		}else {
+			resultMap.put("code", ResultCode.FAILURE);
+			resultMap.put("msg", "插入失败");
+		}
+		resultMap.put("data", "");
+		resultMap.put("ts", new Date().getTime());
+		out.write(gson.toJson(resultMap));
+		out.flush();
+		out.close();
+	}
+
 	/**
 	 * 返回购物车列表
 	 * 描述方法作用
@@ -112,7 +135,7 @@ public class MainServlet extends HttpServlet{
 			Map<String, Object> shopGoodMap = new HashMap<String, Object>();
 			MallingGoods shopGoodVo = goodDao.findGoodById(shopVo.getGoodId());
 			shopGoodMap.put("name", shopGoodVo.getGoodName());
-			shopGoodMap.put("price", shopGoodVo.getPrice());
+			shopGoodMap.put("price", shopGoodVo.getPrice()*100);
 			shopGoodMap.put("described", shopGoodVo.getDescription());
 			shopGoodMap.put("url", IPUtil.getContentpath()+shopGoodVo.getImageUrl());
 			shopGoodMap.put("count", shopVo.getCount());
@@ -129,7 +152,7 @@ public class MainServlet extends HttpServlet{
 			Map<String, Object> recommendGoodMap = new HashMap<String, Object>();
 			MallingGoods recommendGoodVo = goodDao.findGoodById(goodId);
 			recommendGoodMap.put("name", recommendGoodVo.getGoodName());
-			recommendGoodMap.put("price", recommendGoodVo.getPrice());
+			recommendGoodMap.put("price", recommendGoodVo.getPrice()*100);
 			recommendGoodMap.put("url", IPUtil.getContentpath()+recommendGoodVo.getImageUrl());
 			recommendGoodMap.put("type", rand.nextInt(2)+1);
 			recommendedList.add(recommendGoodMap);

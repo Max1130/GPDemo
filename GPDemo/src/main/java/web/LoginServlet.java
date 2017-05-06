@@ -54,34 +54,13 @@ public class LoginServlet extends HttpServlet{
 	private void register(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		res.setContentType("text/plain");
 		res.setCharacterEncoding("UTF-8");
-		
+		//获取用户名和密码
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
 		PrintWriter out = res.getWriter();
 		Gson gson = new Gson();
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("ts", new Date().getTime());
-		
-//		if (username == null || "".equals(username)) {
-//			resultMap.put("code", ResultCode.USER_NAME_EMPTY);
-//			resultMap.put("msg", "用户名不能为空");
-//			resultMap.put("data", "");
-//			out.write(gson.toJson(resultMap));
-//			out.flush(); 
-//			out.close(); 
-//			return ;
-//		}
-//		
-//		if (password == null || "".equals(password)) {
-//			resultMap.put("code", ResultCode.PASSWORD_EMPTY);
-//			resultMap.put("msg", "密码不能为空");
-//			resultMap.put("data", "");
-//			out.write(gson.toJson(resultMap));
-//			out.flush(); 
-//			out.close(); 
-//			return ;
-//		}
-		
 		MallingUserDao userDao = new MallingUserDaoImpl();
 		MallingUser user = userDao.findUserByName(username);
 		if (user != null) {
@@ -132,34 +111,12 @@ public class LoginServlet extends HttpServlet{
 	private void login(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		res.setContentType("text/plain");
 		res.setCharacterEncoding("UTF-8");
-		
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
 		PrintWriter out = res.getWriter();
 		Gson gson = new Gson();
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		
 		resultMap.put("ts", new Date().getTime());
-//		if (username == null || "".equals(username)) {
-//			resultMap.put("code", ResultCode.USER_NAME_EMPTY);
-//			resultMap.put("msg", "用户名不能为空");
-//			resultMap.put("data", "");
-//			out.write(gson.toJson(resultMap));
-//			out.flush(); 
-//			out.close(); 
-//			return ;
-//		}
-//		
-//		if (password == null || "".equals(password)) {
-//			resultMap.put("code", ResultCode.PASSWORD_EMPTY);
-//			resultMap.put("msg", "密码不能为空");
-//			resultMap.put("data", "");
-//			out.write(gson.toJson(resultMap));
-//			out.flush(); 
-//			out.close(); 
-//			return ;
-//		}
-		
 		MallingUserDao userDao = new MallingUserDaoImpl();
 		MallingUser user = userDao.findUserByName(username);
 		if (user == null) {

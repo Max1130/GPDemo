@@ -8,6 +8,9 @@
 	 #submit1{
 		 background-color:#00B5AD;
 	 }
+	 #submit1:hover{
+		 background-color: #009C95;
+	 }
  </style>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -59,7 +62,7 @@
 					</div>
 					<div class="form-group" style="margin-left: 42%;">
 						<div class="col-sm-offset-2 col-sm-10" style="margin: 0px;">
-							 <button id="submit1" type="submit" class="btn btn-default" style="margin-right: 100px;"></button>
+							 <button id="submit1" type="submit" class="btn btn-default" style="margin-right: 100px;">登录</button>
 							 <button type="reset" class="btn btn-default">重置</button>
 						</div>
 					</div>

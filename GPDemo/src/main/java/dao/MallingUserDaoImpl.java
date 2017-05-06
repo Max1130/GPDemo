@@ -10,6 +10,7 @@ import util.DBUtil;
 
 public class MallingUserDaoImpl implements MallingUserDao{
 
+	//保存注册用户信息
 	public boolean insert(MallingUser user) {
 		Connection conn = null;
 		try {
@@ -27,13 +28,14 @@ public class MallingUserDaoImpl implements MallingUserDao{
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			DBUtil.rollback(conn);
 			return false;
 		}finally {
 			DBUtil.close(conn);
 		}
 		return false;
 	}
-
+	//通用户名查询用户信息
 	public MallingUser findUserByName(String userName) {
 		Connection conn = null;
 		try {
@@ -47,7 +49,6 @@ public class MallingUserDaoImpl implements MallingUserDao{
 				user.setUserName(userName);
 				user.setPassword(rs.getString("PASSWORD"));
 				user.setToken(rs.getString("TOKEN"));
-				
 				return user;
 			}
 			return null;
