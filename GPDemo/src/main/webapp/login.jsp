@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <link href="css/bootstrap.min.css" rel="stylesheet">
-
+ <link rel="stylesheet" href="css/jquery-ui.css">
  <style type="text/css">
 	 #submit1{
 		 background-color:#00B5AD;
@@ -21,16 +21,16 @@
 		<div class="row clearfix"  style="background-color: #000000;width: 100%;margin: 50px 0px;">
 			<div class="col-md-6 column" style="width: 300px;">
 				<h1 class="text-center" style="color: #FFFFFF;">
-					Youyibuy
+					优宜拜
 				</h1>
 			</div>
 			<div class="col-md-6 column" style="padding: 0px;margin-right: 200px;width: 500px;">
 				<ul class="nav nav-pills" style="margin-top: 20px;" >
-<!-- 					<li class="active"> -->
-<!-- 						 <a href="index.html">首页</a> -->
-<!-- 					</li> -->
+ 					<li>
+ 						 <a href="index.html" style="color: #FFFFFF;">首页</a>
+					</li>
 					<li>
-						 <a href="toRegister.html">注册</a>
+						 <a href="towebRegister.html" style="color: #FFFFFF;">注册</a>
 					</li>
 				</ul>
 			</div>
@@ -38,19 +38,22 @@
 		<div class="row clearfix">
 			<div class="col-md-12 column" style="padding: 0px;">
 				<form class="form-horizontal" role="form" style="margin-top: 150px ;"
-						action="UserLoginServlet" method="post" onsubmit="return validate();">
+						action="webLogin.html" method="post" onsubmit="return validate();">
 					<div class="form-group" style="margin-left: 30%;">
 						 <label for="inputEmail3" class="col-sm-2 control-label">用户名</label>
 						<div class="col-sm-10" style="width: 30%;">
 							<input type="text" class="form-control" id="inputEmail3"
-								name="userName"/>
+								name="userName" placeholder="请输入用户名..."
+								   onkeyup="clearSpan();"
+							/><span class="required" style="color: red;">${noUser }</span>
 						</div>
 					</div>
 					<div class="form-group" style="margin-left: 30%;">
 						 <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
 						<div class="col-sm-10" style="width: 30%;">
-							<input type="password" class="form-control" id="inputPassword3" 
-								name="password"/>
+							<input type="password" class="form-control" id="inputPassword3"
+								   onkeyup="clearSpan();"
+								name="password" placeholder="请输入6-16位密码"/><span class="required" style="color: red;">${pwWrong }</span>
 						</div>
 					</div>
 					<div class="form-group" style="margin-left: 30%;">
@@ -74,23 +77,57 @@
       <script src="js/jquery-3.2.0.min.js"></script>
       <!-- 包括所有已编译的插件 -->
       <script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery-ui.js"></script>
       <script type="text/javascript">
+//          $("input").focus(function(){
+//              $("span")[0].innerText="";
+//              $("span")[1].innerText="";
+//          });
+		function clearSpan() {
+            $("span")[0].innerText="";
+              $("span")[1].innerText="";
+        }
+
+
       	function validate(){
       		var email = document.getElementById("inputEmail3");
       		var password = document.getElementById("inputPassword3");
 
       		if(email.value==""){
-      			alert("账号不能为空");
-      			email.focus();
+                $("#content").text("用户名不能为空!");
+                $( "#dialog-message" ).dialog({
+                    modal: true,
+                    buttons: {
+                        Ok: function() {
+                            $( this ).dialog( "close" );
+                            email.focus();
+                        }
+                    }
+                });
+
       			return false;
       		} else if(password.value==""){
-      			alert("密码不能为空");
-      			password.focus();
-      			return false;
-      		} 
+                $("#content").text("密码不能为空!");
+                $( "#dialog-message" ).dialog({
+                    modal: true,
+                    buttons: {
+                        Ok: function() {
+                            $( this ).dialog( "close" );
+                            password.focus();
+                        }
+                    }
+                });
+
+                return false;
+
+      		}
 
       		return true;
       	}
       </script>
+	<div type="hidden" id="dialog-message" title="提示信息">
+		<p id="content"></p>
+	</div>
 </body>
 </html>

@@ -1,23 +1,24 @@
 package web;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gson.Gson;
+import dao.MallingUserDao;
+import dao.MallingUserDaoImpl;
+import dao.UserExtendDao;
+import dao.UserExtendDaoImpl;
+import entity.MallingUser;
+import entity.UserExtend;
+import util.ResultCode;
+import util.UuidUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
-
-import dao.MallingUserDao;
-import dao.MallingUserDaoImpl;
-import entity.MallingUser;
-import util.ResultCode;
-import util.UuidUtil;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginServlet extends HttpServlet{
 	/**
@@ -25,6 +26,13 @@ public class LoginServlet extends HttpServlet{
 	*/
 	private static final long serialVersionUID = -4563094501016356110L;
 
+	/**
+	 * 移动端登录注册
+	 * @param req
+	 * @param res
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
@@ -137,9 +145,18 @@ public class LoginServlet extends HttpServlet{
 			out.close(); 
 			return ;
 		}
-		Map<String, String> data = new HashMap<String, String>();
+		Map<String, Object> data = new HashMap<String, Object>();
+		UserExtendDao userExtendDao = new UserExtendDaoImpl();
+		UserExtend userExtend = userExtendDao.query(user.getId());
 		data.put("id", user.getId());
 		data.put("token", user.getToken());
+		data.put("userName", user.getUserName());
+		if (userExtend != null) {
+			data.put("nickName", userExtend.getNickName());
+			data.put("gender", userExtend.getGender());
+			data.put("birthDay", userExtend.getBirthDay());
+		}
+		
 		resultMap.put("code", ResultCode.SUCCEED);
 		resultMap.put("msg", "登录成功");
 		resultMap.put("data", data);

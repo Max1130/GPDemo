@@ -23,10 +23,10 @@ public class GoodsRecommendDaoImpl implements GoodsRecommendDao{
 		try {
 			conn = DBUtil.getConnection();
 			if (recommend != null) {//已经存在记录,只需更新修改日期
-				sql = "update goods_recommend set modify_date = sysdate "
+				sql = "update gp_goods_recommend set modify_date = sysdate "
 						+ "where rid = "+recommend.getRid();
 			}else {
-				sql = "insert into goods_recommend (rid,user_id,good_id,sort,modify_date) "
+				sql = "insert into gp_goods_recommend (rid,user_id,good_id,sort,modify_date) "
 						+ "values ("+goodRecommend.getRid()+","+goodRecommend.getUserId()+""
 						+ ","+goodRecommend.getGoodId()+","+getNextSort(goodRecommend.getUserId())+",sysdate)";
 			}
@@ -50,7 +50,7 @@ public class GoodsRecommendDaoImpl implements GoodsRecommendDao{
 		GoodsRecommend recommend = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "select * from goods_recommend where user_id = " 
+			String sql = "select * from gp_goods_recommend where user_id = " 
 					+ goodRecommend.getUserId()+",and good_id = " +goodRecommend.getGoodId();
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
@@ -83,7 +83,7 @@ public class GoodsRecommendDaoImpl implements GoodsRecommendDao{
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "select max(sort) sort from goods_recommend where user_id="+userId;
+			String sql = "select max(sort) sort from gp_goods_recommend where user_id="+userId;
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {

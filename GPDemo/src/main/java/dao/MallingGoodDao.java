@@ -1,8 +1,8 @@
 package dao;
 
-import java.util.List;
-
 import entity.MallingGoods;
+
+import java.util.List;
 
 public interface MallingGoodDao {
 	/**
@@ -35,4 +35,24 @@ public interface MallingGoodDao {
 	 * modify history
 	 */
 	List<MallingGoods> findGoodsByIds(List<String> ids);
+	List<MallingGoods> queryAll();
+	List<MallingGoods> findGoodsByName(String name);
+	/**
+	 * 分页查询商品
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 */
+	List<MallingGoods> findGoodsByPage(Integer pageIndex,Integer pageSize);
+	/**
+	 * 描述方法作用  查询所有商品记录数
+	 * @author fudakui
+	 * @date 2017/5/15
+	 * modify history
+	 */
+	public Integer findRows();
+
+	List<MallingGoods> findGoodsByNameForPage(Integer pageIndex, Integer pageSize,String name);
+
+	public Integer findRowsForName(String name);
 }

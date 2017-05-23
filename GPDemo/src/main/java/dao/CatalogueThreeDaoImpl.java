@@ -1,14 +1,15 @@
 package dao;
 
+import entity.CatalogueThree;
+import util.DBUtil;
+import util.IPUtil;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import entity.CatalogueThree;
-import util.DBUtil;
 
 public class CatalogueThreeDaoImpl implements CatalogueThreeDao{
 
@@ -17,7 +18,7 @@ public class CatalogueThreeDaoImpl implements CatalogueThreeDao{
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "SELECT THREE_ID,THREE_NAME,PICTURE_URL FROM GP_CATALOGUE_THREE WHERE C_E_ID = "+ceid;
+			String sql = "SELECT THREE_ID,THREE_NAME,PICTURE_URL FROM GP_CATALOGUE_THREE WHERE C_E_ID = '"+ceid+"'";
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			List<CatalogueThree> list = new ArrayList<CatalogueThree>();

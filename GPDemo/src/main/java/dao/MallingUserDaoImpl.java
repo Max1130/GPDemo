@@ -1,12 +1,12 @@
 package dao;
 
+import entity.MallingUser;
+import util.DBUtil;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
-import entity.MallingUser;
-import util.DBUtil;
 
 public class MallingUserDaoImpl implements MallingUserDao{
 
@@ -40,7 +40,7 @@ public class MallingUserDaoImpl implements MallingUserDao{
 		Connection conn = null;
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "select * from malling_user where user_name = '"+userName+"'";
+			String sql = "select * from GP_MALLING_USER where user_name = '"+userName+"'";
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			MallingUser user = new MallingUser();
@@ -59,5 +59,6 @@ public class MallingUserDaoImpl implements MallingUserDao{
 			DBUtil.close(conn);
 		}
 	}
+
 
 }
